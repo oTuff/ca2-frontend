@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-PROJECT_NAME="ca-frontend"
-DROPLET_URL="tuff.sytems"
+PROJECT_NAME="ca2-frontend"
+DROPLET_URL="tuff.systems"
 #echo -n "please enter the project name as it appears on the server in /var/www/"
 #read -r
 #PROJECT_NAME=$REPLY
