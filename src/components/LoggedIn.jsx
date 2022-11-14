@@ -11,6 +11,8 @@ export default function LoggedIn({setLoggedIn}) {
     return (
         <div className="login-container">
             <button onClick={logout}>Logout</button>
+            <br/>
+            {facade.getUserName()} - {facade.getUserRoles()}
         </div>
     )
 

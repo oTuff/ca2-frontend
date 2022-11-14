@@ -2,15 +2,16 @@ import { Link, NavLink } from "react-router-dom";
 import Login from "./Login.jsx";
 import LoggedIn from "./LoggedIn.jsx";
 import facade from "../utils/apiFacade.js";
+import "../styles/header.css";
 
 export default function Header({setErrorMsg, loggedIn, setLoggedIn}) {
     const getClass = ({ isActive }) => (isActive ? "nav-active" : null);
 
     return (
-        <header className="container">
+        <header className="topnav">
             <nav>
                 <NavLink to="/" className={getClass}>
-                    Home
+                   Home
                 </NavLink>
                 <NavLink to="/about" className={getClass}>
                     About
@@ -22,9 +23,6 @@ export default function Header({setErrorMsg, loggedIn, setLoggedIn}) {
                     (<div>
                         <LoggedIn setLoggedIn={setLoggedIn} />
                     </div>)}
-                {facade.getUserName()}
-                <br/>
-                {facade.getUserRoles()}
             </nav>
         </header>
     );

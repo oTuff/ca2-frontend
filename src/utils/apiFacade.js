@@ -1,4 +1,5 @@
 const URL = "https://tuff.systems/tomcat/BackEnd_CA2";
+
 // const URL = "http://localhost:8080";
 
 function handleHttpErrors(res) {
@@ -45,7 +46,38 @@ function apiFacade() {
         return fetch(URL + "/api/info/admin", options).then(handleHttpErrors);
     }
 
-    const makeOptions=(method, addToken, body)=> {
+    const createUser = (user, password) => {
+        const options = makeOptions("POST", null, {
+            "userName": user, "userPass": password, "roles": [
+                "user"
+            ]
+        });
+        return fetch(URL + "/api/info/", options)
+            .then(handleHttpErrors)
+    }
+
+    const updateUser = (user, password, role, userId) => {
+        const options = makeOptions("PUT", null, {
+            "userName": user, "userPass": password, "roles": [
+                role
+            ]
+        });
+        return fetch(URL + "/api/info/user/update/" + userId, options)
+            .then(handleHttpErrors)
+    }
+
+    const deleteUser = async (id) => {
+        fetch(URL + "/api/info/user/" + id, {
+            method: 'DELETE',
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                console.log('DATA:', data);
+                props.setUsers(props.users.filter((user) => user.id !== id))
+            });
+    }
+
+    const makeOptions = (method, addToken, body) => {
         method = method ? method : 'GET';
         const opts = {
             method: method,
@@ -64,33 +96,27 @@ function apiFacade() {
         }
         return opts;
     }
-    const getUserRoles = () =>
-    {
+    const getUserRoles = () => {
         const token = getToken()
-        if (token != null)
-        {
+        if (token != null) {
             const payloadBase64 = getToken().split('.')[1]
             const decodedClaims = JSON.parse(window.atob(payloadBase64))
             const roles = decodedClaims.roles
             return roles
         } else return ""
     }
-    const getUserName = () =>
-    {
+    const getUserName = () => {
         const token = getToken()
-        if (token != null)
-        {
+        if (token != null) {
             const payloadBase64 = getToken().split('.')[1]
             const decodedClaims = JSON.parse(window.atob(payloadBase64))
             const username = decodedClaims.username
             return username
         } else return ""
     }
-    const getUserId = () =>
-    {
+    const getUserId = () => {
         const token = getToken()
-        if (token != null)
-        {
+        if (token != null) {
             const payloadBase64 = getToken().split('.')[1]
             const decodedClaims = JSON.parse(window.atob(payloadBase64))
             const id = decodedClaims.id
@@ -98,8 +124,7 @@ function apiFacade() {
         } else return ""
     }
 
-    const hasUserAccess = (neededRole, loggedIn) =>
-    {
+    const hasUserAccess = (neededRole, loggedIn) => {
         const roles = getUserRoles().split(',')
         return loggedIn && roles.includes(neededRole)
     }
